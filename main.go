@@ -17,7 +17,7 @@ type chatServer struct {
 
 // OnBoot 服务器启动初始化
 func (cs *chatServer) OnBoot(eng gnet.Engine) gnet.Action {
-	log.Println("🚀 Chatroom server is running.")
+	log.Println("Chatroom server is running.")
 	cs.conns = make(map[gnet.Conn]string)
 	return gnet.None
 }
@@ -29,14 +29,14 @@ func (cs *chatServer) OnOpen(c gnet.Conn) (out []byte, action gnet.Action) {
 	cs.conns[c] = name
 	cs.mu.Unlock()
 
-	fmt.Printf("✅ New connection: %s (Total: %d)\n", name, len(cs.conns))
+	fmt.Printf("New connection: %s (Total: %d)\n", name, len(cs.conns))
 
 	// 向其他客户端广播加入信息
-	msg := fmt.Sprintf("📢 %s has entered the chatroom.\n", name)
+	msg := fmt.Sprintf("%s has entered the chatroom.\n", name)
 	cs.broadcast([]byte(msg), c)
 
 	// 返回欢迎语
-	return []byte("🎉 Welcome to the chatroom.\n"), gnet.None
+	return []byte("Welcome to the chatroom.\n"), gnet.None
 }
 
 // OnClose 某连接关闭时触发
@@ -46,7 +46,7 @@ func (cs *chatServer) OnClose(c gnet.Conn, err error) gnet.Action {
 	delete(cs.conns, c)
 	cs.mu.Unlock()
 
-	msg := fmt.Sprintf("👋 %s has left the chatroom.\n", name)
+	msg := fmt.Sprintf("%s has left the chatroom.\n", name)
 	cs.broadcast([]byte(msg), c)
 	return gnet.None
 }
@@ -65,13 +65,13 @@ func (cs *chatServer) OnTraffic(c gnet.Conn) gnet.Action {
 	cs.mu.RUnlock()
 
 	// 格式化广播消息
-	msg := fmt.Sprintf("💬 %s: %s\n", name, data)
+	msg := fmt.Sprintf("%s: %s\n", name, data)
 
 	// 向其他客户端广播消息
 	cs.broadcast([]byte(msg), c)
 
 	// 服务端打印日志
-	fmt.Printf("📨 Received from %s: %s\n", name, data)
+	fmt.Printf("Received from %s: %s\n", name, data)
 	return gnet.None
 }
 
