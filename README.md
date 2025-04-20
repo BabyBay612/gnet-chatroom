@@ -22,8 +22,6 @@
 go install github.com/panjf2000/gnet/v2@latest
 ```
 
----
-
 ### 2. 启动服务端
 
 ```bash
@@ -47,9 +45,8 @@ go run main.go
 
 3. 在任意一端输入消息，另一端即可收到实时广播。
 
----
 
-## 示例输出
+### 示例输出
 
 ```bash
 Chatroom server is running.
